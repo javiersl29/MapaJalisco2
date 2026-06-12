@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Mapa Jalisco 2</title>
+  <link rel="stylesheet" href="/css/app.css" />
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #0f172a, #1e293b); }
+    .login-card { background: #fff; padding: 32px; border-radius: 12px; width: 360px; max-width: 92vw; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+    .login-card h1 { margin: 0 0 4px; font-size: 22px; }
+    .login-card p { margin: 0 0 24px; color: #64748b; font-size: 13px; }
+    .login-card label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin: 12px 0 4px; }
+    .login-card input { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+    .login-card .btn-primary { width: 100%; margin-top: 20px; padding: 10px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; }
+    .login-card .btn-primary:hover { background: #1d4ed8; }
+    .login-card .error { color: #dc2626; font-size: 13px; margin-top: 12px; }
+    .login-card .back { display: block; text-align: center; margin-top: 16px; font-size: 12px; color: #64748b; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <form class="login-card" id="loginForm">
+    <h1>Acceso admin</h1>
+    <p>Mapa Jalisco 2</p>
+    <label>Usuario</label>
+    <input type="text" name="username" required autofocus />
+    <label>Contraseña</label>
+    <input type="password" name="password" required />
+    <button type="submit" class="btn-primary">Entrar</button>
+    <div class="error" id="error"></div>
+    <a class="back" href="/">← Volver al visor</a>
+  </form>
+  <script src="/js/api.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const errEl = document.getElementById('error');
+      errEl.textContent = '';
+      try {
+        const { token, user } = await API.post('/api/auth/login', {
+          username: fd.get('username'),
+          password: fd.get('password'),
+        });
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        location.href = '/admin';
+      } catch (err) {
+        errEl.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>

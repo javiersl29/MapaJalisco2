@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa Jalisco 2 - Visor</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <div class="topbar">
+    <h1>Mapa Jalisco 2 — Visor</h1>
+    <div class="actions">
+      <a href="/admin">Panel admin</a>
+      <button id="refreshBtn">Refrescar</button>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <aside class="sidebar">
+    <header>
+      <h2>Capas</h2>
+      <span id="layerCount" style="font-size:12px;color:#64748b"></span>
+    </header>
+    <div class="body" id="layerList"></div>
+  </aside>
+
+  <div class="zoom-info"><span id="zoomLevel">--</span> | <span id="centerInfo">--</span></div>
+
+  <div class="modal-backdrop" id="layerModal">
+    <div class="modal">
+      <header>
+        <h3 id="layerModalTitle">Capa</h3>
+        <button class="close" data-close>&times;</button>
+      </header>
+      <div class="body" id="layerModalBody"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/visor.js"></script>
+</body>
+</html>

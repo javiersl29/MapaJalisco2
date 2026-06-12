@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Mapa Jalisco 2</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="/css/app.css" />
+  <style>
+    .layout { display: grid; grid-template-columns: 380px 1fr; height: 100vh; }
+    aside { background: #0f172a; color: #cbd5e1; padding: 18px; overflow-y: auto; }
+    aside h1 { color: #fff; font-size: 18px; margin: 0 0 4px; }
+    aside .user { font-size: 12px; margin-bottom: 20px; }
+    aside .user .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; background: #1e293b; color: #94a3b8; font-size: 10px; margin-left: 6px; }
+    aside nav button { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid #1e293b; color: #cbd5e1; padding: 9px 12px; border-radius: 6px; cursor: pointer; margin-bottom: 6px; font-size: 13px; }
+    aside nav button.active { background: #2563eb; border-color: #2563eb; color: #fff; }
+    aside nav button:hover:not(.active) { background: #1e293b; }
+    aside .actions { margin-top: 18px; }
+    aside .actions a, aside .actions button { display: block; width: 100%; text-align: center; padding: 9px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; margin-top: 6px; cursor: pointer; }
+    aside .actions .logout { background: #7f1d1d; color: #fff; border: 1px solid #991b1b; }
+    aside .actions .vis { background: #1e293b; color: #fff; border: 1px solid #334155; }
+    main { position: relative; }
+    .panel { display: none; position: absolute; inset: 0; overflow-y: auto; padding: 24px; background: #f8fafc; }
+    .panel.active { display: block; }
+    .panel h2 { margin-top: 0; }
+    .card { background: #fff; border-radius: 10px; padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-bottom: 16px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+    th { background: #f1f5f9; font-weight: 600; color: #475569; font-size: 12px; }
+    .row-actions { display: flex; gap: 6px; }
+    .row-actions button { padding: 4px 10px; font-size: 12px; border-radius: 4px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; }
+    .row-actions button.danger { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-grid label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .form-grid input, .form-grid select, .form-grid textarea { width: 100%; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; }
+    .form-grid .full { grid-column: 1 / -1; }
+    #previewMap { width: 100%; height: 240px; border-radius: 8px; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <h1>Mapa Jalisco 2</h1>
+      <div class="user">Sesión: <strong id="userLabel">—</strong><span class="badge" id="roleLabel"></span></div>
+      <nav id="nav">
+        <button data-tab="layers" class="active">Capas</button>
+        <button data-tab="users">Usuarios</button>
+      </nav>
+      <div class="actions">
+        <a class="vis" href="/" target="_blank">Abrir visor</a>
+        <button class="logout" id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </aside>
+    <main>
+      <section class="panel active" id="tab-layers">
+        <h2>Gestión de capas</h2>
+        <div class="card">
+          <h3 style="margin-top:0">Subir nueva capa</h3>
+          <form id="uploadForm">
+            <div class="form-grid">
+              <div>
+                <label>Tipo</label>
+                <select name="type" id="uploadType">
+                  <option value="vector">Vector (GeoJSON / Shapefile.zip)</option>
+                  <option value="raster">Raster (GeoTIFF / PNG / JPG)</option>
+                </select>
+              </div>
+              <div>
+                <label>Nombre interno (slug)</label>
+                <input name="name" placeholder="auto si vacío" />
+              </div>
+              <div class="full">
+                <label>Título</label>
+                <input name="title" required />
+              </div>
+              <div class="full">
+                <label>Descripción</label>
+                <textarea name="description" rows="2"></textarea>
+              </div>
+              <div class="full">
+                <label>Archivo</label>
+                <input name="file" type="file" required />
+              </div>
+              <div class="full">
+                <button type="submit" class="btn primary">Subir capa</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0">Capas existentes</h3>
+          <table>
+            <thead>
+              <tr><th>Título</th><th>Tipo</th><th>Formato</th><th>Visible</th><th>z</th><th>Opacidad</th><th>Acciones</th></tr>
+            </thead>
+            <tbody id="layersTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="tab-users">
+        <h2>Usuarios</h2>
+        <div class="card">
+          <h3 style="margin-top:0">Crear usuario</h3>
+          <form id="userForm">
+            <div class="form-grid">
+              <div>
+                <label>Usuario</label>
+                <input name="username" required />
+              </div>
+              <div>
+                <label>Contraseña</label>
+                <input name="password" type="password" required />
+              </div>
+              <div class="full">
+                <label>Rol</label>
+                <select name="role">
+                  <option value="viewer">Viewer (solo ver)</option>
+                  <option value="editor">Editor (subir/modificar capas)</option>
+                  <option value="admin">Admin (todo)</option>
+                </select>
+              </div>
+              <div class="full">
+                <button type="submit" class="btn primary">Crear usuario</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">Lista de usuarios</h3>
+          <table>
+            <thead><tr><th>ID</th><th>Usuario</th><th>Rol</th><th>Acciones</th></tr></thead>
+            <tbody id="usersTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>
