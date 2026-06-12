@@ -1,17 +1,14 @@
+console.log('[start] wrapper running');
 import { spawn } from 'node:child_process';
+import { execSync } from 'node:child_process';
 
-function run(cmd, args) {
-  return new Promise((resolve, reject) => {
-    const p = spawn(cmd, args, { stdio: 'inherit' });
-    p.on('exit', (code) => (code === 0 ? resolve() : reject(new Error(`${cmd} exited ${code}`))));
-    p.on('error', reject);
-  });
-}
-
+console.log('[start] Ejecutando init-db...');
 try {
-  await run('node', ['server/src/db/init.js']);
+  execSync('node server/src/db/init.js', { stdio: 'inherit' });
+  console.log('[start] init-db OK');
 } catch (e) {
   console.error('[start] init-db fallo, continuando:', e.message);
 }
 
-await run('node', ['server/src/index.js']);
+console.log('[start] Iniciando servidor...');
+await import('./index.js');
