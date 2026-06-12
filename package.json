@@ -5,12 +5,12 @@
   "main": "server/src/index.js",
   "type": "module",
   "scripts": {
-    "start": "echo 'STEP1: running init-db' && node server/src/db/init.js && echo 'STEP2: starting server' && node server/src/index.js",
+    "start": "node server/src/start.js",
     "dev": "node --watch server/src/index.js",
     "init-db": "node server/src/db/init.js"
   },
   "railway": {
-    "startCommand": "npm start"
+    "startCommand": "node server/src/start.js"
   },
   "engines": {
     "node": ">=20"
