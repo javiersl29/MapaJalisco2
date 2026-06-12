@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server/src/index.js",
+    "start:prod": "node server/src/db/init.js && node server/src/index.js",
     "dev": "node --watch server/src/index.js",
     "init-db": "node server/src/db/init.js"
   },
