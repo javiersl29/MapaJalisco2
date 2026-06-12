@@ -41,10 +41,6 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: err.message || 'Error interno' });
 });
 
-const server = app.listen(config.port, () => {
-  console.log(`[server] http://localhost:${config.port}`);
-});
-
 async function bootstrapDb() {
   if (process.env.INIT_DB_ON_BOOT !== 'true') return;
   try {
@@ -98,10 +94,15 @@ async function bootstrapDb() {
     }
   } catch (e) {
     console.error('[bootstrap] Error inicializando DB:', e.message);
+    throw e;
   }
 }
 
-bootstrapDb();
+await bootstrapDb();
+
+const server = app.listen(config.port, () => {
+  console.log(`[server] http://localhost:${config.port}`);
+});
 
 process.on('SIGTERM', () => server.close(() => pool.end()));
 process.on('SIGINT', () => server.close(() => process.exit(0)));
