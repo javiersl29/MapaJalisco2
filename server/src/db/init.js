@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import { pool, query } from './pool.js';
 import { config } from '../config.js';
 
+console.log('[init-db] Iniciando bootstrap de base de datos...');
+
 const SQL = `
 CREATE EXTENSION IF NOT EXISTS postgis;
 
@@ -42,6 +44,7 @@ CREATE INDEX IF NOT EXISTS idx_layers_visible ON layers(visible);
 
 async function bootstrap() {
   await query(SQL);
+  console.log('[init-db] Tablas y extension postgis listas');
 
   const { rows } = await query('SELECT COUNT(*)::int AS c FROM users');
   if (rows[0].c === 0) {
@@ -56,6 +59,7 @@ async function bootstrap() {
   }
 
   await pool.end();
+  console.log('[init-db] Listo.');
 }
 
 bootstrap().catch((err) => {
