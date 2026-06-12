@@ -10,7 +10,7 @@
     "init-db": "node server/src/db/init.js"
   },
   "railway": {
-    "startCommand": "node server/src/start.js"
+    "startCommand": "npm start"
   },
   "engines": {
     "node": ">=20"
