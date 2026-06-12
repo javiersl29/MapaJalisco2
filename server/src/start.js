@@ -1,14 +1,18 @@
-console.log('[start] wrapper running');
-import { spawn } from 'node:child_process';
 import { execSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-console.log('[start] Ejecutando init-db...');
+const here = path.dirname(fileURLToPath(import.meta.url));
+const initPath = path.join(here, 'db', 'init.js');
+
+console.log('[start] wrapper booting...');
 try {
-  execSync('node server/src/db/init.js', { stdio: 'inherit' });
+  console.log('[start] Ejecutando init-db:', initPath);
+  execSync(`node ${JSON.stringify(initPath)}`, { stdio: 'inherit' });
   console.log('[start] init-db OK');
 } catch (e) {
-  console.error('[start] init-db fallo, continuando:', e.message);
+  console.error('[start] init-db fallo:', e.message);
 }
 
-console.log('[start] Iniciando servidor...');
+console.log('[start] Cargando servidor...');
 await import('./index.js');
