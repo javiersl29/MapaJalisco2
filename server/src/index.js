@@ -25,6 +25,10 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
+app.get('/api/config', (_req, res) => {
+  res.json({ mapbox_token: process.env.MAPBOX_TOKEN || '' });
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/layers', layerRoutes);
