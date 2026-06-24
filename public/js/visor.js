@@ -206,7 +206,7 @@
     });
     map.addLayer({
       id: 'mun-line', type: 'line', source: 'mun-src', 'source-layer': MUN_SL,
-      paint: { 'line-color': '#2563eb', 'line-width': 1.5, 'line-opacity': 0.8 },
+      paint: { 'line-color': '#0a4a85', 'line-width': 1.5, 'line-opacity': 0.8 },
     });
 
     // ANPS
@@ -217,11 +217,11 @@
     });
     map.addLayer({
       id: 'anps-fill', type: 'fill', source: 'anps-src', 'source-layer': ANPS_SL,
-      paint: { 'fill-color': '#22c55e', 'fill-opacity': 0.5 },
+      paint: { 'fill-color': '#00c3b3', 'fill-opacity': 0.5 },
     });
     map.addLayer({
       id: 'anps-line', type: 'line', source: 'anps-src', 'source-layer': ANPS_SL,
-      paint: { 'line-color': '#15803d', 'line-width': 1.5, 'line-opacity': 0.9 },
+      paint: { 'line-color': '#008a80', 'line-width': 1.5, 'line-opacity': 0.9 },
     });
 
     // Measurement source
