@@ -40,7 +40,6 @@
 
   map.addControl(new maplibregl.NavigationControl(), 'top-left');
   map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-right');
-  map.addControl(new maplibregl.FullscreenControl(), 'top-left');
 
   const dbLayerListEl = document.getElementById('dbLayers');
   const layerCountEl = document.getElementById('layerCount');
@@ -49,6 +48,22 @@
   const modal = document.getElementById('layerModal');
 
   document.getElementById('refreshBtn').addEventListener('click', loadLayers);
+
+  document.getElementById('fsBtn')?.addEventListener('click', () => {
+    const el = document.getElementById('map');
+    if (!document.fullscreenElement) {
+      (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el);
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen)?.call(document);
+    }
+    setTimeout(() => map.resize(), 200);
+  });
+
+  document.getElementById('gmapsBtn')?.addEventListener('click', () => {
+    const c = map.getCenter();
+    const z = Math.round(map.getZoom());
+    window.open(`https://www.google.com/maps/@${c.lat},${c.lng},${z}z`, '_blank');
+  });
   modal.addEventListener('click', (e) => {
     if (e.target === modal || e.target.dataset.close !== undefined) modal.classList.remove('show');
   });
@@ -280,9 +295,9 @@
   async function loadLayers() {
     try {
       const { layers } = await API.get('/api/layers');
-      state.layers = layers;
+      state.layers = layers.filter(l => !/uso\s*de\s*suelo/i.test(l.title || l.name || ''));
       renderLayerList();
-      for (const l of layers) {
+      for (const l of state.layers) {
         const sourceId = l.name;
         if (l.type === 'vector') {
           if (!map.getSource(sourceId)) {

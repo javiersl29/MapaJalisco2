@@ -3,61 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mapa Jalisco 2 - Visor</title>
+  <title>SEMADET Jalisco - Visor SIG</title>
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
   <link rel="stylesheet" href="/css/app.css" />
 </head>
 <body>
-  <div class="topbar">
-    <h1>Mapa Jalisco 2 — Visor</h1>
-    <div class="actions">
-      <a href="/admin">Panel admin</a>
-      <button id="refreshBtn">Refrescar</button>
+  <div id="map">
+    <div class="topbar">
+      <div class="topbar-brand">
+        <img src="/img/semadet-logo.png" alt="SEMADET" class="logo" onerror="this.style.display='none'" />
+        <h1>SEMADET Jalisco <span class="subtitle">Visor SIG</span></h1>
+      </div>
+      <div class="actions">
+        <a href="/admin" class="btn-topbar">Panel Admin</a>
+        <button id="gmapsBtn" class="btn-topbar" title="Abrir ubicacion en Google Maps">Maps</button>
+        <button id="fsBtn" class="btn-topbar" title="Pantalla completa">Pantalla Completa</button>
+        <button id="refreshBtn" class="btn-topbar">Refrescar</button>
+      </div>
     </div>
+
+    <aside class="sidebar">
+      <header>
+        <h2>Capas</h2>
+        <span id="layerCount" style="font-size:12px;color:#64748b"></span>
+      </header>
+      <div class="body" id="layerList">
+        <div class="section-header">Mapa Base</div>
+        <div class="basemap-switcher">
+          <label><input type="radio" name="basemap" value="hybrid" checked> Google Hibrido</label>
+          <label><input type="radio" name="basemap" value="roads"> Google Mapas</label>
+        </div>
+
+        <div class="section-header">Capas SIG</div>
+        <div class="layer-item sig-item">
+          <input type="checkbox" id="sig-anps" checked />
+          <div style="flex:1">
+            <div class="name"><span class="sig-dot" style="background:#22c55e"></span> ANPS</div>
+            <div class="sig-opacity">
+              <input type="range" min="0" max="100" value="50" id="sig-anps-op" />
+              <span class="sig-val" id="sig-anps-val">50%</span>
+            </div>
+          </div>
+        </div>
+        <div class="layer-item sig-item">
+          <input type="checkbox" id="sig-mun" checked />
+          <div style="flex:1">
+            <div class="name"><span class="sig-dot" style="background:#3b82f6"></span> Municipios</div>
+            <div class="sig-opacity">
+              <input type="range" min="0" max="100" value="35" id="sig-mun-op" />
+              <span class="sig-val" id="sig-mun-val">35%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header">Capas del Sistema</div>
+        <div id="dbLayers"></div>
+      </div>
+    </aside>
+
+    <div class="zoom-info"><span id="zoomLevel">--</span> | <span id="centerInfo">--</span></div>
   </div>
-
-  <div id="map"></div>
-
-  <aside class="sidebar">
-    <header>
-      <h2>Capas</h2>
-      <span id="layerCount" style="font-size:12px;color:#64748b"></span>
-    </header>
-    <div class="body" id="layerList">
-      <div class="section-header">Mapa Base</div>
-      <div class="basemap-switcher">
-        <label><input type="radio" name="basemap" value="hybrid" checked> Google Híbrido</label>
-        <label><input type="radio" name="basemap" value="roads"> Google Mapas</label>
-      </div>
-
-      <div class="section-header">Capas SIG</div>
-      <div class="layer-item sig-item">
-        <input type="checkbox" id="sig-anps" checked />
-        <div style="flex:1">
-          <div class="name"><span class="sig-dot" style="background:#22c55e"></span> ANPS</div>
-          <div class="sig-opacity">
-            <input type="range" min="0" max="100" value="50" id="sig-anps-op" />
-            <span class="sig-val" id="sig-anps-val">50%</span>
-          </div>
-        </div>
-      </div>
-      <div class="layer-item sig-item">
-        <input type="checkbox" id="sig-mun" checked />
-        <div style="flex:1">
-          <div class="name"><span class="sig-dot" style="background:#3b82f6"></span> Municipios</div>
-          <div class="sig-opacity">
-            <input type="range" min="0" max="100" value="35" id="sig-mun-op" />
-            <span class="sig-val" id="sig-mun-val">35%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-header">Capas del Sistema</div>
-      <div id="dbLayers"></div>
-    </div>
-  </aside>
-
-  <div class="zoom-info"><span id="zoomLevel">--</span> | <span id="centerInfo">--</span></div>
 
   <div class="modal-backdrop" id="layerModal">
     <div class="modal">
