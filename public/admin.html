@@ -45,6 +45,7 @@
       <nav id="nav">
         <button data-tab="layers" class="active">Capas</button>
         <button data-tab="users">Usuarios</button>
+        <button data-tab="config">Configuracion</button>
       </nav>
       <div class="actions">
         <a class="vis" href="/" target="_blank">Abrir visor</a>
@@ -135,10 +136,45 @@
           </table>
         </div>
       </section>
+
+      <section class="panel" id="tab-config">
+        <h2>Configuracion</h2>
+        <div class="card">
+          <h3 style="margin-top:0">Logo Institucional SEMADET</h3>
+          <p style="font-size:13px;color:#64748b;margin-bottom:12px">Sube el logo que aparece en la barra superior del visor. Formato PNG transparente recomendado.</p>
+          <form id="logoForm">
+            <div class="form-grid">
+              <div class="full">
+                <label>Archivo (PNG / JPG - max 5MB)</label>
+                <input name="logo" type="file" accept="image/png,image/jpeg" required />
+              </div>
+              <div class="full">
+                <button type="submit" class="btn primary">Subir logo</button>
+              </div>
+            </div>
+          </form>
+          <div id="logoResult" style="margin-top:10px;font-size:13px;"></div>
+        </div>
+      </section>
     </main>
   </div>
 
   <script src="/js/api.js"></script>
   <script src="/js/admin.js"></script>
+  <script>
+    document.getElementById('logoForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const result = document.getElementById('logoResult');
+      result.innerHTML = '<span style="color:#64748b">Subiendo...</span>';
+      try {
+        await API.upload('/api/logo', fd);
+        result.innerHTML = '<span style="color:green">&#10003; Logo actualizado. <a href="/" target="_blank">Ver visor</a></span>';
+        e.target.reset();
+      } catch (err) {
+        result.innerHTML = '<span style="color:red">&#10005; ' + err.message + '</span>';
+      }
+    });
+  </script>
 </body>
 </html>

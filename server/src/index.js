@@ -2,6 +2,8 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import path from 'node:path';
+import fs from 'node:fs';
+import multer from 'multer';
 import { fileURLToPath } from 'node:url';
 import { config } from './config.js';
 import { pool } from './db/pool.js';
@@ -27,6 +29,15 @@ app.get('/api/health', async (_req, res) => {
 
 app.get('/api/config', (_req, res) => {
   res.json({ mapbox_token: process.env.MAPBOX_TOKEN || '' });
+});
+
+const logoUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
+app.post('/api/logo', logoUpload.single('logo'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No se envio archivo' });
+  const imgDir = path.join(__dirname, '..', '..', 'public', 'img');
+  if (!fs.existsSync(imgDir)) fs.mkdirSync(imgDir, { recursive: true });
+  fs.writeFileSync(path.join(imgDir, 'semadet-logo.png'), req.file.buffer);
+  res.json({ ok: true, message: 'Logo actualizado' });
 });
 
 app.use('/api/auth', authRoutes);

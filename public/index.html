@@ -48,10 +48,10 @@
         <div class="layer-item sig-item">
           <input type="checkbox" id="sig-mun" checked />
           <div style="flex:1">
-            <div class="name"><span class="sig-dot" style="background:#3b82f6"></span> Municipios</div>
+            <div class="name"><span class="sig-dot" style="background:transparent;border:2px solid #2563eb"></span> Municipios</div>
             <div class="sig-opacity">
-              <input type="range" min="0" max="100" value="35" id="sig-mun-op" />
-              <span class="sig-val" id="sig-mun-val">35%</span>
+              <input type="range" min="0" max="100" value="80" id="sig-mun-op" />
+              <span class="sig-val" id="sig-mun-val">80%</span>
             </div>
           </div>
         </div>
@@ -62,6 +62,18 @@
     </aside>
 
     <div class="zoom-info"><span id="zoomLevel">--</span> | <span id="centerInfo">--</span></div>
+
+    <div class="map-toolbar">
+      <button id="toggleSidebar" title="Mostrar / ocultar capas">&#9776;</button>
+      <button id="toolDistance" title="Medir distancia">&#128207;</button>
+      <button id="toolArea" title="Medir superficie">&#128208;</button>
+      <button id="toolLocate" title="Mi ubicacion">&#128205;</button>
+    </div>
+
+    <div class="measure-info" id="measureInfo" style="display:none;">
+      <span class="measure-text"></span>
+      <button id="measureClear" title="Limpiar">&#10005;</button>
+    </div>
   </div>
 
   <div class="modal-backdrop" id="layerModal">

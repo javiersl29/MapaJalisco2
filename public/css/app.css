@@ -133,3 +133,36 @@ html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple
 .maplibregl-popup-tip { border-top-color: rgba(15, 23, 42, 0.95); }
 .maplibregl-popup-anchor-bottom .maplibregl-popup-tip { border-top-color: rgba(15, 23, 42, 0.95); }
 .maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: rgba(15, 23, 42, 0.95); }
+
+/* ===== Collapsible sidebar ===== */
+.sidebar { transition: transform 0.3s ease, opacity 0.2s ease; }
+.sidebar.collapsed { transform: translateX(calc(100% + 20px)); pointer-events: none; opacity: 0; }
+
+/* ===== Map toolbar ===== */
+.map-toolbar {
+  position: absolute; left: 10px; bottom: 40px; z-index: 10;
+  display: flex; flex-direction: column; gap: 2px;
+  background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+  border-radius: 8px; padding: 4px;
+}
+.map-toolbar button {
+  width: 38px; height: 38px; border: none; background: transparent;
+  color: #fff; font-size: 17px; cursor: pointer; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.map-toolbar button:hover { background: rgba(255,255,255,0.15); }
+.map-toolbar button.active { background: #0d7a34; }
+.map-toolbar button.loading { background: #2563eb; animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* ===== Measurement info ===== */
+.measure-info {
+  position: absolute; left: 56px; bottom: 42px; z-index: 10;
+  background: rgba(15, 23, 42, 0.92); color: #fff;
+  padding: 6px 12px; border-radius: 6px; font-size: 13px;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3); max-width: 400px;
+}
+.measure-info .measure-text { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.measure-info button { background: none; border: none; color: #ef4444; font-size: 14px; cursor: pointer; padding: 0; }
