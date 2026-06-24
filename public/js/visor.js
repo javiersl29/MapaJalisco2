@@ -228,19 +228,19 @@
     map.addSource('measure-src', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
     map.addLayer({
       id: 'measure-fill', type: 'fill', source: 'measure-src', filter: ['==', '$type', 'Polygon'],
-      paint: { 'fill-color': '#0d7a34', 'fill-opacity': 0.15 },
+      paint: { 'fill-color': '#073763', 'fill-opacity': 0.15 },
     });
     map.addLayer({
       id: 'measure-line', type: 'line', source: 'measure-src', filter: ['==', '$type', 'LineString'],
-      paint: { 'line-color': '#0d7a34', 'line-width': 2.5, 'line-dasharray': [2, 1] },
+      paint: { 'line-color': '#073763', 'line-width': 2.5, 'line-dasharray': [2, 1] },
     });
     map.addLayer({
       id: 'measure-poly-line', type: 'line', source: 'measure-src', filter: ['==', '$type', 'Polygon'],
-      paint: { 'line-color': '#0d7a34', 'line-width': 2, 'line-dasharray': [2, 1] },
+      paint: { 'line-color': '#073763', 'line-width': 2, 'line-dasharray': [2, 1] },
     });
     map.addLayer({
       id: 'measure-points', type: 'circle', source: 'measure-src', filter: ['==', '$type', 'Point'],
-      paint: { 'circle-radius': 5, 'circle-color': '#fff', 'circle-stroke-width': 2, 'circle-stroke-color': '#0d7a34' },
+      paint: { 'circle-radius': 5, 'circle-color': '#fff', 'circle-stroke-width': 2, 'circle-stroke-color': '#ff8300' },
     });
 
     setupSIGControls();
@@ -278,6 +278,7 @@
       const p = e.features[0].properties;
       new maplibregl.Popup({ maxWidth: '300px' }).setLngLat(e.lngLat).setHTML(
         `<div class="popup-content"><div class="popup-title">${p.NOM_ANP || 'ANP'}</div>` +
+        (p.ADMIN ? `<div class="popup-badge ${/federal/i.test(p.ADMIN) ? 'federal' : 'estatal'}">${p.ADMIN}</div>` : '') +
         `<div class="popup-row"><span class="popup-label">Tipo</span><span class="popup-val">${p.TIPO || 'N/A'}</span></div>` +
         `<div class="popup-row"><span class="popup-label">Region</span><span class="popup-val">${p.REGION || 'N/A'}</span></div>` +
         `<div class="popup-row"><span class="popup-label">Municipio</span><span class="popup-val">${p.MUNICIPIO || 'N/A'}</span></div>` +

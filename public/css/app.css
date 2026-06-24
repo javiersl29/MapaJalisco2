@@ -3,12 +3,12 @@ html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple
 
 #map { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
 
-/* ===== Topbar (SEMADET institutional green) ===== */
+/* ===== Topbar (azul institucional #073763) ===== */
 .topbar {
   position: absolute; top: 0; left: 0; right: 0; z-index: 20;
   display: flex; align-items: center; justify-content: space-between;
   padding: 7px 16px;
-  background: linear-gradient(135deg, #0d7a34 0%, #0a5e28 100%);
+  background: #073763; border-bottom: 3px solid #ff8300;
   color: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.3); flex-wrap: wrap; gap: 8px;
 }
 .topbar-brand { display: flex; align-items: center; gap: 10px; }
@@ -17,11 +17,11 @@ html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple
 .topbar .subtitle { font-size: 12px; font-weight: 400; opacity: 0.8; }
 .topbar .actions { display: flex; gap: 6px; flex-wrap: wrap; }
 .btn-topbar {
-  background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.2);
   padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; cursor: pointer;
-  transition: background 0.15s; white-space: nowrap;
+  transition: all 0.15s; white-space: nowrap;
 }
-.btn-topbar:hover { background: rgba(255,255,255,0.3); }
+.btn-topbar:hover { background: #ff8300; border-color: #ff8300; }
 
 /* ===== Map controls below topbar ===== */
 .maplibregl-ctrl-top-left { top: 56px !important; }
@@ -38,7 +38,7 @@ html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple
 .sidebar header {
   padding: 12px 14px; border-bottom: 1px solid #e5e7eb;
   display: flex; align-items: center; justify-content: space-between;
-  background: linear-gradient(135deg, #0d7a34 0%, #0a5e28 100%); color: #fff;
+  background: #073763; color: #fff;
 }
 .sidebar header h2 { margin: 0; font-size: 14px; font-weight: 600; color: #fff; }
 .sidebar header span { color: rgba(255,255,255,0.7) !important; }
@@ -62,7 +62,7 @@ html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple
 
 .zoom-info {
   position: absolute; bottom: 8px; left: 8px; z-index: 8;
-  background: rgba(15, 23, 42, 0.75); color: #fff; padding: 4px 10px;
+  background: rgba(7, 55, 99, 0.85); color: #fff; padding: 4px 10px;
   border-radius: 4px; font-size: 12px; font-family: monospace;
 }
 
@@ -96,8 +96,8 @@ html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple
   cursor: pointer; font-size: 13px;
 }
 .btn:hover { background: #f1f5f9; }
-.btn.primary { background: #2563eb; color: #fff; border-color: #2563eb; }
-.btn.primary:hover { background: #1d4ed8; }
+.btn.primary { background: #073763; color: #fff; border-color: #073763; }
+.btn.primary:hover { background: #0a4a85; }
 .btn.danger { background: #dc2626; color: #fff; border-color: #dc2626; }
 .btn.danger:hover { background: #b91c1c; }
 
@@ -105,8 +105,8 @@ html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple
 .section-header {
   padding: 8px 14px 4px;
   font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.6px; color: #0d7a34; background: #f0fdf4;
-  border-left: 3px solid #0d7a34;
+  letter-spacing: 0.6px; color: #073763; background: #eef4fa;
+  border-left: 3px solid #ff8300;
 }
 
 /* ===== Basemap switcher ===== */
@@ -123,16 +123,24 @@ html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple
 
 /* ===== Popups ===== */
 .maplibregl-popup-content {
-  background: rgba(15, 23, 42, 0.95); color: #f1f5f9; border-radius: 8px;
+  background: rgba(7, 55, 99, 0.97); color: #f1f5f9; border-radius: 8px;
   padding: 12px 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); font-size: 13px; max-width: 280px;
+  border: 1px solid rgba(255,131,0,0.3);
 }
-.popup-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.popup-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.popup-badge {
+  display: inline-block; padding: 2px 10px; border-radius: 4px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  margin-bottom: 6px; letter-spacing: 0.8px;
+}
+.popup-badge.federal { background: #ff8300; color: #fff; }
+.popup-badge.estatal { background: #0a4a85; color: #fff; }
 .popup-row { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 2px; }
 .popup-label { color: #94a3b8; }
 .popup-val { color: #e2e8f0; font-weight: 500; }
-.maplibregl-popup-tip { border-top-color: rgba(15, 23, 42, 0.95); }
-.maplibregl-popup-anchor-bottom .maplibregl-popup-tip { border-top-color: rgba(15, 23, 42, 0.95); }
-.maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: rgba(15, 23, 42, 0.95); }
+.maplibregl-popup-tip { border-top-color: rgba(7, 55, 99, 0.97); }
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip { border-top-color: rgba(7, 55, 99, 0.97); }
+.maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: rgba(7, 55, 99, 0.97); }
 
 /* ===== Collapsible sidebar ===== */
 .sidebar { transition: transform 0.3s ease, opacity 0.2s ease; }
@@ -142,7 +150,7 @@ html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple
 .map-toolbar {
   position: absolute; left: 10px; bottom: 40px; z-index: 10;
   display: flex; flex-direction: column; gap: 2px;
-  background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+  background: rgba(7, 55, 99, 0.9); backdrop-filter: blur(8px);
   border-radius: 8px; padding: 4px;
 }
 .map-toolbar button {
@@ -152,14 +160,14 @@ html, body { margin: 0; padding: 0; height: 100%; font-family: system-ui, -apple
   transition: background 0.15s;
 }
 .map-toolbar button:hover { background: rgba(255,255,255,0.15); }
-.map-toolbar button.active { background: #0d7a34; }
+.map-toolbar button.active { background: #ff8300; }
 .map-toolbar button.loading { background: #2563eb; animation: pulse 1s infinite; }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
 
 /* ===== Measurement info ===== */
 .measure-info {
   position: absolute; left: 56px; bottom: 42px; z-index: 10;
-  background: rgba(15, 23, 42, 0.92); color: #fff;
+  background: rgba(7, 55, 99, 0.95); color: #fff;
   padding: 6px 12px; border-radius: 6px; font-size: 13px;
   display: flex; align-items: center; gap: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3); max-width: 400px;
